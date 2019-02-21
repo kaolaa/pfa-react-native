@@ -4,3 +4,4 @@ export Dropdown from './Dropdown';
 export GridRow from './GridRow';
 export TextInput from './TextInput';
 export SegmentedControl from './SegmentedControl';
+export TimeTable from './TimeTable';

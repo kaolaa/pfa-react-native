@@ -23,7 +23,7 @@ function itemsLoadingFailed() {
 
 const names = ['Max', 'Philip', 'Alex', 'Irina', 'Vovan'];
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const labels = ['Urgent', 'Interview'];
+const labels = ['TP', 'Cours'];
 
 export function loadItems(day) {
   // Do items loading here
@@ -37,14 +37,47 @@ export function loadItems(day) {
       const strTime = (new Date(time)).toISOString().split('T')[0];
       if (!items[strTime]) {
         items[strTime] = [];
-        const numItems = randomNumber(0, 5);
-        for (let j = 0; j < numItems; j++) {
-          items[strTime].push({
-            name: `Meeting with ${names[randomNumber(0, 4)]}`,
-            time: `${randomNumber(0, 24)}:${randomNumber(0, 60)}`,
-            labels: randomNumber(0, 1) ? [labels[randomNumber(0, 1)]] : [],
-          });
-        }
+        // const numItems = randomNumber(0, 5);
+        // for (let j = 0; j < numItems; j++) {
+        //   items[strTime].push({
+        //     name: `Meeting with ${names[randomNumber(0, 4)]}`,
+        //     time: `${randomNumber(0, 24)}:${randomNumber(0, 60)}`,
+        //     labels: randomNumber(0, 1) ? [labels[randomNumber(0, 1)]] : [],
+        //   });
+        // }
+        const tableData = [
+          [
+            'Lundi',
+            "Systemes d'information geographique \nagdal - 4B\n8.30 - 10.00",
+            "Systemes d'information geographique \nagdal\n4B",
+            '',
+            'administartion oracle\nbourgegrag\ncc3',
+            'Etude de cas \nbourgegrag\ncc4',
+          ],
+          ['Mardi', 'JAVA Avancee\nbourgegrag\ncc1', 'JAVA Avancee\nbourgegrag\nLR', '', '', ''],
+          ['Mercredi', 'Administration UNIX \nbourgegrag\ncc3', 'Atelier oracle\nbourgegrag\ncc1', '', '', ''],
+          ['Jeudi', 'Droit des affaires\nbourgegrag\n4b', 'Anglais\nbourgegrag\n4b', 'Virtualisation\nbourgegrag\ncc3', '', ''],
+          ['Vendredi', 'Gestion de projet\nbourgegrag\n6b', 'TEC\nbourgegrag\n4b', '', '', ''],
+          ['Samedi', 'Reseaux haut debits\nbourgegrag\ncc3', '', '', '', ''],
+        ]
+        items[strTime].push({
+          name: `Systemes d'information \n\ngeographique`,
+          time: `8.30`,
+          labels: `Cours` ,
+        });
+        items[strTime].push({
+          name: `JAVA Avancee`,
+          time: `10.45`,
+          labels: `TP` ,
+        });items[strTime].push({
+          name: `Droit des affaires`,
+          time: `14.30`,
+          labels: `Cours` ,
+        });items[strTime].push({
+          name: `Gestion de projet`,
+          time: `16.45`,
+          labels: `Cours` ,
+        });
       }
     }
 

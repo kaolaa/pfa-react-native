@@ -5,17 +5,17 @@ import { createBottomTabNavigator } from 'react-navigation';
 
 import { Colors, Fonts } from '../constants';
 
-import HomeScreen from '../containers/HomeScreen';
+import TimeTableScreen from '../containers/TimeTableScreen';
 import CalendarScreen from '../containers/CalendarScreen';
-import GridsScreen from '../containers/GridsScreen';
+import ProfileScreen from '../containers/ProfileScreen';
 import PagesScreen from '../containers/PagesScreen';
 import ComponentsScreen from '../containers/ComponentsScreen';
 
-const iconHome = require('../../assets/images/tabbar/home.png');
-const iconCalendar = require('../../assets/images/tabbar/calendar.png');
-const iconGrids = require('../../assets/images/tabbar/grids.png');
-const iconPages = require('../../assets/images/tabbar/pages.png');
-const iconComponents = require('../../assets/images/tabbar/components.png');
+const iconHome = require('../../assets/images/pages/home.png');
+const iconCalendar = require('../../assets/images/pages/calendar.png');
+const iconGrids = require('../../assets/images/pages/clock.png');
+const iconPages = require('../../assets/images/pages/profile.png');
+const iconComponents = require('../../assets/images/pages/dots.png');
 
 const hederBackground = require('../../assets/images/topBarBg.png');
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 export default createBottomTabNavigator(
     {
         Home: {
-            screen: HomeScreen,
+            screen: PagesScreen,
             navigationOptions: {
                 header: null,
             },
@@ -78,8 +78,8 @@ export default createBottomTabNavigator(
                 ),
             },
         },
-        Grids: {
-            screen: GridsScreen,
+        TimeTable: {
+            screen: TimeTableScreen,
             navigationOptions: {
                 header: (
                     <View style={styles.headerContainer}>
@@ -92,8 +92,8 @@ export default createBottomTabNavigator(
                 ),
             },
         },
-        Pages: {
-            screen: PagesScreen,
+        Profile: {
+            screen: ProfileScreen,
             navigationOptions: {
                 header: (
                     <View style={styles.headerContainer}>
@@ -131,13 +131,13 @@ export default createBottomTabNavigator(
                     case 'Home':
                         iconSource = iconHome;
                         break;
-                    case 'Calendar':
+                    case 'TimeTable':
                         iconSource = iconCalendar;
                         break;
-                    case 'Grids':
+                    case 'Calendar':
                         iconSource = iconGrids;
                         break;
-                    case 'Pages':
+                    case 'Profile':
                         iconSource = iconPages;
                         break;
                     case 'Components':
@@ -164,8 +164,9 @@ export default createBottomTabNavigator(
         animationEnabled: false,
         swipeEnabled: false,
         tabBarOptions: {
-            showLabel: true,
+            showLabel: false,
             style: {
+                
                 backgroundColor: Colors.white,
                 borderTopWidth: 0.5,
                 borderTopColor: '#d6d6d6',

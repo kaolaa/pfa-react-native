@@ -4,6 +4,7 @@ import {
   View,
   Platform,
   Text,
+  TouchableOpacity
 } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 
@@ -25,30 +26,42 @@ class CalendarScreen extends React.Component {
       </View>
     );
   }
-
+ 
   renderItem(item) {
-    const labels = item.labels && item.labels.map(label => (
-      <View
-        key={`label-${label}`}
-        style={{
-          padding: 5,
-          backgroundColor: label === 'Urgent' ? Colors.primary : Colors.secondary,
-          borderRadius: 3,
-        }}
-      >
-        <Text style={{ color: 'white' }}>{label}</Text>
-      </View>
-    ));
+    
+    // const labels = item.labels && item.labels.map(label => (
+    //  <View
+    //     key={`label-${label}`}
+    //     style={{
+    //       padding: 5,
+    //       backgroundColor: label === 'TP' ? Colors.primary : Colors.secondary,
+    //       borderRadius: 3,
+    //     }}
+    //   >
+    //     <Text style={{ color: 'white' }}>{label}</Text>
+    //   </View>
+    // ));
 
     return (
+   
       <View style={styles.item}>
+      
         <View>
           <Text style={{ color: '#48506B', fontFamily: Fonts.primaryRegular, marginBottom: 10 }}>{item.name}</Text>
           <Text style={{ color: '#9B9B9B', fontFamily: Fonts.primaryRegular }}>{item.time}</Text>
         </View>
 
         <View styleName="horizontal h-start">
-          {labels}
+        <View
+        key={`label-${item.labels}`}
+        style={{
+          padding: 5,
+          backgroundColor: item.labels === 'TP' ? Colors.primary : Colors.secondary,
+          borderRadius: 3,
+        }}
+      >
+        <Text style={{ color: 'white' }}>{item.labels}</Text>
+      </View>
         </View>
       </View>
     );
@@ -56,8 +69,10 @@ class CalendarScreen extends React.Component {
 
   render() {
     return (
+
       <Agenda
         items={this.props.items}
+        
         loadItemsForMonth={this.props.loadItems}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
