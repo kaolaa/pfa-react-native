@@ -9,7 +9,6 @@ import PagesScreen from '../screens/PagesScreen';
 export default compose(
   connect(
     state => ({
-
     }),
     dispatch => ({
       authStateActions: bindActionCreators(AuthStateActions, dispatch),

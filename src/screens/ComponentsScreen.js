@@ -15,7 +15,7 @@ import { Button, RadioGroup, Dropdown } from '../components';
 export default function ComponentsScreen(props) {
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
-      <View style={styles.componentsSection}>
+      {/* <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>Radio Group</Text>
 
         <RadioGroup
@@ -34,19 +34,20 @@ export default function ComponentsScreen(props) {
           selectedIndex={props.radioGroupsState[1]}
           onChange={index => props.setRadioGroupsState({ ...props.radioGroupsState, 1: index })}
         />
-      </View>
+      </View> */}
 
       <View style={styles.componentsSection}>
-        <Text style={styles.componentSectionHeader}>Buttons</Text>
+        <Text style={styles.componentSectionHeader}>Parametter</Text>
 
         <View style={styles.demoButtonsContainer}>
+    
           <Button
             style={styles.demoButton}
             primary
-            caption="Button"
-            onPress={this.buttonClicked}
+            caption="Deconexion"
+            onPress={props.authStateActions.loggedOut}
           />
-          <Button
+          {/* <Button
             style={styles.demoButton}
             secondary
             caption="Button"
@@ -95,11 +96,11 @@ export default function ComponentsScreen(props) {
             rounded
             caption="Button"
             onPress={this.buttonClicked}
-          />
+          /> */}
         </View>
       </View>
 
-      <View style={styles.componentsSection}>
+      {/* <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>Action Buttons</Text>
 
         <View style={styles.demoButtonsContainer}>
@@ -152,9 +153,9 @@ export default function ComponentsScreen(props) {
             <Text><Icon name="reply-all" size={20} color="white" /></Text>
           </Button>
         </View>
-      </View>
+      </View> */}
 
-      <View style={styles.componentsSection}>
+      {/* <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>Icons</Text>
 
         <View style={styles.demoIconsContainer}>
@@ -196,9 +197,9 @@ export default function ComponentsScreen(props) {
           bordered
           caption="More Icons"
         />
-      </View>
+      </View> */}
 
-      <View style={styles.componentsSection}>
+      {/* <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>Dropdown</Text>
 
         <Dropdown
@@ -206,7 +207,7 @@ export default function ComponentsScreen(props) {
           onSelect={() => {}}
           items={['option 1', 'option 2']}
         />
-      </View>
+      </View> */}
     </ScrollView>
   );
 }

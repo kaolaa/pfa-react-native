@@ -2,9 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Platform,
   Text,
-  TouchableOpacity
+  
 } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 
@@ -13,8 +12,18 @@ import { Colors, Fonts } from '../constants';
 class CalendarScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      data:[],
+      user:{},
+    };
   }
 
+
+  componentDidMount() {
+    this.setState({ data :this.props.items});
+   
+
+  }
   rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
   }
@@ -22,28 +31,15 @@ class CalendarScreen extends React.Component {
   renderEmptyDate() {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text>Cette journée est vide</Text>
       </View>
     );
   }
  
   renderItem(item) {
-    
-    // const labels = item.labels && item.labels.map(label => (
-    //  <View
-    //     key={`label-${label}`}
-    //     style={{
-    //       padding: 5,
-    //       backgroundColor: label === 'TP' ? Colors.primary : Colors.secondary,
-    //       borderRadius: 3,
-    //     }}
-    //   >
-    //     <Text style={{ color: 'white' }}>{label}</Text>
-    //   </View>
-    // ));
+  
 
     return (
-   
       <View style={styles.item}>
       
         <View>
@@ -68,11 +64,11 @@ class CalendarScreen extends React.Component {
   }
 
   render() {
+    // console.log(this.props.items);
     return (
 
       <Agenda
         items={this.props.items}
-        
         loadItemsForMonth={this.props.loadItems}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}

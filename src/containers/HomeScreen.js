@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 export default compose(
   connect(
     state => ({
-
+      
     }),
   ),
   withState('isExtended', 'setIsExtended', false),

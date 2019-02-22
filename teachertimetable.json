@@ -1,0 +1,41 @@
+[{
+    "_id": "5c6b55048beaf32e84f9929d",
+    "idClasse": "5c6218abcd535720afab47c2",
+    "matiere": {
+        "_id": "5c6b54598beaf32e84f9929c",
+        "idFiliere": "5c604ab7361f7c13f46c0584",
+        "nom": "Miage1",
+        "niveau": 5
+    },
+    "jour": "Mercredi",
+    "seance": 1,
+    "idEnseignant": "5c6b4f20258dcb2b8a9c75b3",
+    "nomEnseignant": "CMMI"
+}, {
+    "_id": "5c6b57978beaf32e84f9929f",
+    "idClasse": "5c6218abcd535720afab47c2",
+    "matiere": {
+        "_id": "5c6b57108beaf32e84f9929e",
+        "idFiliere": "5c604ab7361f7c13f46c0584",
+        "nom": "4IIR2",
+        "niveau": 5
+    },
+    "jour": "Vendredi",
+    "seance": 5,
+    "idEnseignant": "5c6b4f28258dcb2b8a9c75b4",
+    "nomEnseignant": "Gestion de projet"
+}, {
+    "_id": "5c6b4f7f8beaf32e84f9929b",
+    "idClasse": "5c6218abcd535720afab47c2",
+    "matiere": {
+        "_id": "5c6093f947537014464f174f",
+        "idFiliere": "5c604ab7361f7c13f46c0584",
+        "nom": "Miage1",
+        "niveau": 5
+    },
+    "jour": "Vendredi",
+    "seance": 1,
+    "idEnseignant": "5c6b4f28258dcb2b8a9c75b4",
+    "nomEnseignant": "CMMI"
+}]
+

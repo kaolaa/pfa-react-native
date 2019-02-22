@@ -1,3 +1,5 @@
+
+import axios from 'axios';
 // Initial state
 const initialState = {
   isLoggedIn: false,
@@ -7,23 +9,40 @@ const initialState = {
   id: null,
   name: null,
   userToken: null,
+  tes:'hello'
 };
+import {AsyncStorage} from 'react-native';
 
 // Actions
 const SKIPPED_LOGIN = 'AuthState/SKIP';
 const LOGGED_IN = 'AuthState/LOGGED_IN';
 const PASSED_WALKTHROUGH = 'AuthState/PASSED_WALKTHROUGH';
 const LOGGED_OUT = 'AuthState/LOGGED_OUT';
-
+const FETCH_USERS = 'FETCH USERS';
 // Action creators
-export function loggedIn(userData) {
-  return {
-    type: LOGGED_IN,
-    payload: userData,
-  };
+export async function loggedIn(userdata,user) {
+  return function action(dispatch) {
+    dispatch({ type: SKIPPED_LOGIN })
+    axios.post('http://192.168.1.6:5000/api/users/auth/login', {
+    email: userdata.email,
+    password: userdata.password
+  }).
+    then(res => {
+      console.log(userdata)
+      if(res.data.user){
+        console.log('hey')
+        user=res.data.user
+      }
+    })  
+    return {
+      type: SKIPPED_LOGIN,
+      payload: userdata,
+    };
 }
-
+}
 export function skipLogin() {
+  // AsyncStorage.setItem("userID", "5c6b4f28258dcb2b8a9c75b4");       
+
   return {
     type: SKIPPED_LOGIN,
   };
@@ -47,6 +66,7 @@ export default function AuthStateReducer(state = initialState, action = {}) {
     case LOGGED_IN:
       return Object.assign({}, state, {
         hasPassedWalkthrough: state.hasPassedWalkthrough,
+        hasSkippedLogin: true,
         isLoggedIn: true,
         id: action.data.id,
         name: action.data.name,

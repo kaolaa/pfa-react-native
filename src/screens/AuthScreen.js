@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import {AsyncStorage} from 'react-native';
+
 import {
   StyleSheet,
   View,
@@ -20,11 +23,14 @@ const FORM_STATES = {
   LOGIN: 0,
   REGISTER: 1,
 };
+const GLOBAL = require('../../globale.js');
 
 export default class AuthScreen extends React.Component {
   state = {
+    user:{},
     anim: new Animated.Value(0),
-
+      email:"",
+      password:"",
     // Current visible form
     formState: FORM_STATES.LOGIN,
     isKeyboardVisible: false,
@@ -33,6 +39,7 @@ export default class AuthScreen extends React.Component {
   componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener(Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }), this._keyboardDidShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener(Platform.select({ android: 'keyboardDidHide', ios: 'keyboardWillHide' }), this._keyboardDidHide.bind(this));
+ 
   }
 
   componentDidMount() {
@@ -71,7 +78,39 @@ export default class AuthScreen extends React.Component {
       }],
     };
   }
+  testauth(user){
 
+
+    // if(email==="koala@gmail.com"){
+      axios.post('http://192.168.1.6:5000/api/users/auth/login', {
+        email: user,
+        password: "123"
+      }).
+      then(res => {
+        console.log(user)
+        if(res.data.user){
+          console.log('hey')
+          user=res.data.user
+          AsyncStorage.setItem("userID", res.data.user._id);       
+          console.log(res.data.user._id)
+
+        }
+      })  
+
+    //   if(user===""){
+    //     id="5c6f1944fb6fc01c4ce9d24e"
+    
+    // axios.get('http://192.168.1.6:5000/api/users/5c6f1944fb6fc01c4ce9d24e').
+    // then(res => {
+    //   if(res.data){
+    //     this.state.user=res.data
+    //     AsyncStorage.setItem("userID", res.data._id);     
+
+    //     console.log(res.data._id)
+       
+    //   }
+    // }) }
+  }
   render() {
     const TopComponent = Platform.select({ ios: KeyboardAvoidingView, android: View });
     const isRegister = this.state.formState === FORM_STATES.REGISTER;
@@ -93,27 +132,31 @@ export default class AuthScreen extends React.Component {
           </View>
 
           <Animated.View style={[styles.section, styles.middle, this.fadeIn(700, -20)]}>
-            <TextInput
-              placeholder="Username"
-              style={styles.textInput}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-
-            { this.state.formState === FORM_STATES.REGISTER &&
+           
             <TextInput
               placeholder="Email"
               style={styles.textInput}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
-            />
+              onChangeText={(theemail) => this.setState({email:theemail})}
+              />
+
+            { this.state.formState === FORM_STATES.REGISTER &&
+             <TextInput
+             placeholder="Username"
+             style={styles.textInput}
+             autoCapitalize="none"
+             autoCorrect={false}
+           />
           }
 
             <TextInput
               placeholder="Password"
               secureTextEntry
               style={styles.textInput}
+              onChangeText={(pw) => this.setState({password:pw})}
+
             />
 
             <Animated.View style={[styles.section, styles.bottom, this.fadeIn(700, -20)]}>
@@ -122,7 +165,8 @@ export default class AuthScreen extends React.Component {
                 rounded
                 style={{ alignSelf: 'stretch', marginBottom: 10 }}
                 caption={this.state.formState === FORM_STATES.LOGIN ? 'Login' : 'Register'}
-                onPress={() => this.props.authStateActions.skipLogin()}
+                onPress={() => { this.testauth(this.state.email),this.props.authStateActions.skipLogin()}}
+                  //this.props.authStateActions.loggedIn({email:this.state.email,password:this.state.password},{})}}
               />
 
               { !this.state.isKeyboardVisible && (

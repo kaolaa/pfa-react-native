@@ -1,6 +1,9 @@
+import axios from 'axios';
+
 const START_ITEMS_LOADING = 'CalendarState/START_ITEMS_LOADING';
 const ITEMS_LOADED = 'CalendarState/ITEMS_LOADED';
 const LOADING_FAILED = 'CalendarState/LOADING_FAILED';
+import {AsyncStorage} from 'react-native';
 
 function startItemsLoading() {
   return {
@@ -21,70 +24,119 @@ function itemsLoadingFailed() {
   };
 }
 
-const names = ['Max', 'Philip', 'Alex', 'Irina', 'Vovan'];
-const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-const labels = ['TP', 'Cours'];
+function dayOfWeek(thetimestamp) {
+  var weekday = new Array(7);
+  weekday[0] = "Dimanche";
+  weekday[1] = "Lundi";
+  weekday[2] = "Mardi";
+  weekday[3] = "Mercredi";
+  weekday[4] = "Jeudi";
+  weekday[5] = "Vendredi";
+  weekday[6] = "Samedi";
+
+  return weekday[thetimestamp.getDay()];
+}
+
+function getTheTime(num) {
+  var time = '';
+  switch (num) {
+    case 1:
+      {
+        return '8.30';
+        break;
+      }
+    case 2:
+      {
+        return '10.15';
+        break;
+      }
+    case 3:
+      {
+        return '13.15';
+        break;
+      }
+    case 4:
+      {
+        return '15.00';
+        break;
+      }
+    case 5:
+      {
+         return '16.45';
+        break;
+      }
+    default:
+      break;
+  }
+
+}
+
 
 export function loadItems(day) {
+  var data = [];
+  const items = {};
+var user = {};
   // Do items loading here
   return (dispatch, getState) => {
-    if (getState().calendar.items.length > 0) return;
+    AsyncStorage.getItem("userID").then((value) => {
+      const id = value 
+      axios.get('http://192.168.1.6:5000/api/users/'+ id ).
+      then(res => {
+         user = res.data 
+         console.log('hey user');
+         axios.get('http://192.168.1.6:5000/api/seances').
+         then(res => {
+          data = res.data;
 
-    const items = {};
+          if (user.role){
+            const profile = user.role
+             console.log(profile)
+              if (profile!=="Etudiant"){
+                console.log('hey got seance');
+                const dataa =  require('../../../teachertimetable.json');
+                data = dataa;
+                console.log(data);
+              }
+            }
+          
+           if (getState().calendar.items.length > 0) return;
+           for (let i = -15; i < 85; i++) {
+             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+             const weekday = dayOfWeek((new Date(time)));
+             const strTime = (new Date(time)).toISOString().split('T')[0];
+             if (!items[strTime]) {
+               items[strTime] = [];
+               console.log(weekday);
+               data.forEach(seance => {
+     
+                 if (seance.jour === weekday) {
+                   console.log('hey')
+                   items[strTime].push({
+                     name: seance.matiere.nom + `\n` + seance.nomEnseignant,
+                     time: getTheTime(seance.seance),
+                     labels: `Cours`,
+                   });
+                 }
+               });
+             }
+           }
+           const newItems = {};
+           console.log(items)
+           Object.keys(items).forEach((key) => {
+             newItems[key] = items[key];
+     
+             console.log(newItems[key])
+           });
+     
+           dispatch(itemsLoaded(newItems));ß
+         })
+          
+      })  
+   }).done();
 
-    for (let i = -15; i < 85; i++) {
-      const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-      const strTime = (new Date(time)).toISOString().split('T')[0];
-      if (!items[strTime]) {
-        items[strTime] = [];
-        // const numItems = randomNumber(0, 5);
-        // for (let j = 0; j < numItems; j++) {
-        //   items[strTime].push({
-        //     name: `Meeting with ${names[randomNumber(0, 4)]}`,
-        //     time: `${randomNumber(0, 24)}:${randomNumber(0, 60)}`,
-        //     labels: randomNumber(0, 1) ? [labels[randomNumber(0, 1)]] : [],
-        //   });
-        // }
-        const tableData = [
-          [
-            'Lundi',
-            "Systemes d'information geographique \nagdal - 4B\n8.30 - 10.00",
-            "Systemes d'information geographique \nagdal\n4B",
-            '',
-            'administartion oracle\nbourgegrag\ncc3',
-            'Etude de cas \nbourgegrag\ncc4',
-          ],
-          ['Mardi', 'JAVA Avancee\nbourgegrag\ncc1', 'JAVA Avancee\nbourgegrag\nLR', '', '', ''],
-          ['Mercredi', 'Administration UNIX \nbourgegrag\ncc3', 'Atelier oracle\nbourgegrag\ncc1', '', '', ''],
-          ['Jeudi', 'Droit des affaires\nbourgegrag\n4b', 'Anglais\nbourgegrag\n4b', 'Virtualisation\nbourgegrag\ncc3', '', ''],
-          ['Vendredi', 'Gestion de projet\nbourgegrag\n6b', 'TEC\nbourgegrag\n4b', '', '', ''],
-          ['Samedi', 'Reseaux haut debits\nbourgegrag\ncc3', '', '', '', ''],
-        ]
-        items[strTime].push({
-          name: `Systemes d'information \n\ngeographique`,
-          time: `8.30`,
-          labels: `Cours` ,
-        });
-        items[strTime].push({
-          name: `JAVA Avancee`,
-          time: `10.45`,
-          labels: `TP` ,
-        });items[strTime].push({
-          name: `Droit des affaires`,
-          time: `14.30`,
-          labels: `Cours` ,
-        });items[strTime].push({
-          name: `Gestion de projet`,
-          time: `16.45`,
-          labels: `Cours` ,
-        });
-      }
-    }
 
-    const newItems = {};
-    Object.keys(items).forEach((key) => { newItems[key] = items[key]; });
 
-    dispatch(itemsLoaded(newItems));
+  
   };
 }
 

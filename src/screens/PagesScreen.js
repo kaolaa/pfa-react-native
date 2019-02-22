@@ -10,160 +10,189 @@ import {
   ScrollView
 
 } from 'react-native';
-import {Entypo as Icon} from '@expo/vector-icons';
 import {Colors, Fonts} from '../constants';
+import {AsyncStorage} from 'react-native';
+import axios from 'axios';
 
-const chartIcon = require('../../assets/images/pages/chart.png');
 const calendarIcon = require('../../assets/images/pages/calendar.png');
-const chatIcon = require('../../assets/images/pages/chat.png');
 const galleryIcon = require('../../assets/images/pages/gallery.png');
 const profileIcon = require('../../assets/images/pages/profile.png');
 const ticketIcon = require('../../assets/images/pages/tickets.png');
 const noteIcon = require('../../assets/images/pages/file.png');
 const AgendaIcon = require('../../assets/images/pages/clock.png');
 
-export default function PagesScreen(props) {
-  return (
-    <ScrollView >
-    <View style={styles.container}>
-     <View>
 
-     </View>
-     <View >     
-      <View style={styles.row}>
-         <TouchableOpacity
-          >
-          <Image
-            source={profileIcon}
-            style={styles.avatar}
-          />
-        </TouchableOpacity>
-        <View style={styles.avatarTitle}>
-          <Text style={styles.itemText}>Hassan gol</Text>
-        <Text style={styles.itemText}>4iir</Text>
 
-        </View>
-        
-      </View>
-      </View>
-     
-    <View >
-    <Text style={styles.Title}>Vos cours aujourd'huit</Text>
-    <ScrollView horizontal={true}>
 
-    <View style={styles.row}>
-    <TouchableOpacity
-        style={styles.itemTwoContainer}
-        >
-        <View style={styles.itemTwoContent}>
-          <Image style={styles.itemTwoImage}  />
-          <View style={styles.itemTwoOverlay} />
-          <Text style={styles.itemTwoTitle}>JAVASCRIPT</Text>
-          <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
-          <Text style={styles.itemTwoPrice}>salle: 4B</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.itemTwoContainer}
-        >
-        <View style={styles.itemTwoContent}>
-          <Image style={styles.itemTwoImage}  />
-          <View style={styles.itemTwoOverlay} />
-          <Text style={styles.itemTwoTitle}>TCP/IP</Text>
-          <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
-          <Text style={styles.itemTwoPrice}>salle: 3B</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.itemTwoContainer}
-        >
-        <View style={styles.itemTwoContent}>
-          <Image style={styles.itemTwoImage}  />
-          <View style={styles.itemTwoOverlay} />
-          <Text style={styles.itemTwoTitle}>TCP/IP</Text>
-          <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
-          <Text style={styles.itemTwoPrice}>salle: 3B</Text>
-        </View>
-      </TouchableOpacity>
+export default class GridsScreen extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+       user:{},
       
-     </View>
-</ScrollView>
-    </View>
-     <View > 
-     <Text style={styles.Title}>Actions</Text>
-     <View style={styles.row}>
-       <TouchableOpacity
-         onPress={() => props.navigation.navigate({routeName: 'Profile'})}
-         style={styles.item}>
-         <Image
-           resizeMode="contain"
-           source={profileIcon}
-           style={styles.itemImage}
-         />
-         <Text style={styles.itemText}>Profile</Text>
-       </TouchableOpacity>
+    };
+  }
+
+  componentDidMount() {
+   AsyncStorage.getItem("userID").then((value) => {
+      const id = value 
+      axios.get('http://192.168.1.6:5000/api/users/'+ id ).
+      then(res => {
+         this.setState({ user :res.data }); 
+         console.log('hey user');       
+      })  
+   }).done();
+  
+  }
+
+
+  render() {
+    return (  <ScrollView >
+      <View style={styles.container}>
+       <View>
+  
+       </View>
+       <View >     
+        <View style={styles.row}>
+           <TouchableOpacity
+            >
+            <Image
+              source={profileIcon}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+          <View style={styles.avatarTitle}>
+            <Text style={styles.itemText}>{this.state.user.nom} {this.state.user.prenom} </Text>
+          <Text style={styles.itemText}>{this.state.user.email} </Text>
+  
+          </View>
+          
+        </View>
+        </View>
        
-       <TouchableOpacity
-         onPress={() => props.navigation.navigate({routeName: 'TimeTable'})}
-         style={styles.item}>
-         <Image
-           resizeMode="contain"
-           source={calendarIcon}
-           style={styles.itemImage}
-         />
-         <Text style={styles.itemText}>Emplois</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         onPress={() => props.navigation.navigate({routeName: 'Gallery'})}
-         style={styles.item}>
-         <Image
-           resizeMode="contain"
-           source={galleryIcon}
-           style={styles.itemImage}
-         />
-         <Text style={styles.itemText}>gallery</Text>
-       </TouchableOpacity>
-     </View>
+      <View >
+      <Text style={styles.Title}>Vos cours aujourd'huit</Text>
+      <ScrollView horizontal={true}>
+  
       <View style={styles.row}>
+      <TouchableOpacity
+          style={styles.itemTwoContainer}
+          >
+          <View style={styles.itemTwoContent}>
+            <Image style={styles.itemTwoImage}  />
+            <View style={styles.itemTwoOverlay} />
+            <Text style={styles.itemTwoTitle}>JAVASCRIPT</Text>
+            <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
+            <Text style={styles.itemTwoPrice}>salle: 4B</Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate({routeName: 'Note'})}
-          style={styles.item}>
-          <Image
-            resizeMode="contain"
-            source={noteIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Notes</Text>
+          style={styles.itemTwoContainer}
+          >
+          <View style={styles.itemTwoContent}>
+            <Image style={styles.itemTwoImage}  />
+            <View style={styles.itemTwoOverlay} />
+            <Text style={styles.itemTwoTitle}>TCP/IP</Text>
+            <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
+            <Text style={styles.itemTwoPrice}>salle: 3B</Text>
+          </View>
+        </TouchableOpacity>
+  
+        <TouchableOpacity
+          style={styles.itemTwoContainer}
+          >
+          <View style={styles.itemTwoContent}>
+            <Image style={styles.itemTwoImage}  />
+            <View style={styles.itemTwoOverlay} />
+            <Text style={styles.itemTwoTitle}>TCP/IP</Text>
+            <Text style={styles.itemTwoSubTitle}>local: Agdal</Text>
+            <Text style={styles.itemTwoPrice}>salle: 3B</Text>
+          </View>
         </TouchableOpacity>
         
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate({routeName: 'Calendar'})}
-          style={styles.item}>
-          <Image
-            resizeMode="contain"
-            source={AgendaIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Agenda</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate({routeName: 'Gallery'})}
-          style={styles.item}>
-          <Image
-            resizeMode="contain"
-            source={ticketIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Ticket</Text>
-        </TouchableOpacity>
+       </View>
+  </ScrollView>
       </View>
+       <View > 
+       <Text style={styles.Title}>Actions</Text>
+       <View style={styles.row}>
+         <TouchableOpacity
+           onPress={() => props.navigation.navigate({routeName: 'Profile'})}
+           style={styles.item}>
+           <Image
+             resizeMode="contain"
+             source={profileIcon}
+             style={styles.itemImage}
+           />
+           <Text style={styles.itemText}>Profile</Text>
+         </TouchableOpacity>
+         
+         <TouchableOpacity
+           onPress={() => props.navigation.navigate({routeName: 'TimeTable'})}
+           style={styles.item}>
+           <Image
+             resizeMode="contain"
+             source={calendarIcon}
+             style={styles.itemImage}
+           />
+           <Text style={styles.itemText}>Emplois</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           onPress={() => props.navigation.navigate({routeName: 'Gallery'})}
+           style={styles.item}>
+           <Image
+             resizeMode="contain"
+             source={galleryIcon}
+             style={styles.itemImage}
+           />
+           <Text style={styles.itemText}>gallery</Text>
+         </TouchableOpacity>
+       </View>
+        <View style={styles.row}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate({routeName: 'Note'})}
+            style={styles.item}>
+            <Image
+              resizeMode="contain"
+              source={noteIcon}
+              style={styles.itemImage}
+            />
+            <Text style={styles.itemText}>Notes</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate({routeName: 'Calendar'})}
+            style={styles.item}>
+            <Image
+              resizeMode="contain"
+              source={AgendaIcon}
+              style={styles.itemImage}
+            />
+            <Text style={styles.itemText}>Agenda</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate({routeName: 'Gallery'})}
+            style={styles.item}>
+            <Image
+              resizeMode="contain"
+              source={ticketIcon}
+              style={styles.itemImage}
+            />
+            <Text style={styles.itemText}>Ticket</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
+       
       </View>
-     
-    </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
